@@ -7,8 +7,11 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.55",
+    "@babel/plugin-syntax-jsx": "^7.0.0-beta.55",
     "@babel/preset-env": "^7.0.0-beta.55",
+    "babel-helper-vue-jsx-merge-props": "^2.0.3",
     "babel-loader": "^8.0.0-beta.4",
+    "babel-plugin-transform-vue-jsx": "^4.0.1",
     "cross-env": "^5.2.0",
     "html-webpack-plugin": "^3.2.0",
     "ts-loader": "^4.4.2",

@@ -1,16 +1,34 @@
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
+import List from './List';
 
-const locales = {
+Vue.use(VueI18n);
+
+const messages = {
   zh: {},
-  en: {}
+  en: {
+    directive: 'Use v-t directive',
+    computed: 'Use computed',
+    node: "I'm a text node",
+    value: 'Input value',
+    placeholder: 'Input placeholder',
+    customAttribute: 'Custom attribute'
+  }
 };
 
-new Vue({
-  name: 'Example',
-  template: `
-    <div id="app">
+const i18n = new VueI18n({
+  locale: 'en',
+  messages
+});
 
-    </div>
-  `
+new Vue({
+  i18n,
+  el: '#origin',
+  render: h => h(List)
+});
+
+new Vue({
+  i18n,
+  el: '#devtools',
+  render: h => h(List)
 });
