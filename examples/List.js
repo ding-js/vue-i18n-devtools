@@ -7,6 +7,7 @@ export default {
         <li>{this.computedValue}</li>
         <li>Text node: {this.$t('node')}</li>
         <li data-custom-attribute={this.$t('customAttribute')} v-t="customAttribute" />
+        <li v-t="specialCharacters" />
         <li>
           <input type="text" value={this.$t('value')} />
         </li>
