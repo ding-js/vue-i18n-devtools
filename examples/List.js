@@ -1,8 +1,14 @@
+import ListTitle from './ListTitle';
+
 export default {
   name: 'List',
+  props: {
+    title: String
+  },
   render(h) {
     return (
       <ul class="vue-i18n-devtools__list">
+        <ListTitle title={this.$t(this.title)} />
         <li v-t="directive" />
         <li>{this.computedValue}</li>
         <li>Text node: {this.$t('node')}</li>
