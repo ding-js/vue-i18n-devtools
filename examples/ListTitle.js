@@ -1,9 +1,10 @@
 export default {
   name: 'ListTitle',
+  functional: true,
   props: {
     title: String
   },
-  render() {
-    return <h2>{this.title}</h2>;
+  render(h, ctx) {
+    return <h2>Functional component: {ctx.props.title}</h2>;
   }
 };

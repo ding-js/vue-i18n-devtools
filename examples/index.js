@@ -25,7 +25,10 @@ const i18n = new VueI18n({
   messages
 });
 
-Vue.use(VueI8nDevtools, { i18n });
+Vue.use(VueI8nDevtools, {
+  i18n,
+  attrs: ['placeholder', 'title', 'data-custom-attribute']
+});
 
 new Vue({
   i18n,
