@@ -8,6 +8,8 @@ Vue.use(VueI18n);
 const messages = {
   zh: {},
   en: {
+    origin: 'Origin',
+    devtools: 'Devtools',
     directive: 'Use v-t directive',
     computed: 'Use computed',
     node: "I'm a text node",
@@ -28,11 +30,11 @@ Vue.use(VueI8nDevtools, { i18n });
 new Vue({
   i18n,
   el: '#origin',
-  render: h => h(List)
+  render: h => h(List, { props: { title: 'origin' } })
 });
 
 new Vue({
   i18n,
   el: '#devtools',
-  render: h => h(List)
+  render: h => h(List, { props: { title: 'devtools' } })
 });
