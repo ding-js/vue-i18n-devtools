@@ -50,9 +50,7 @@ const classifyNodes = (children, node, nodesMap) => {
   }
 };
 
-const tmpElement = document.createElement('div');
-
-export default ({ startTag, endTag, extras }) => {
+export default ({ startTag, endTag, extras, className }) => {
   const regexp = new RegExp(`${escapeRegExp(startTag)}([\\s\\S]+?)${escapeRegExp(endTag)}`, 'g');
   const hasRegexp = new RegExp(regexp.source);
 
@@ -72,20 +70,35 @@ export default ({ startTag, endTag, extras }) => {
           return;
         }
 
-        tmpElement.innerHTML = text.replace(regexp, (string, mark) => {
+        let match;
+        let prevIndex = 0;
+
+        while ((match = regexp.exec(text)) !== null) {
+          const mark = match[1];
           const [key, value] = mark.split('|');
 
           if (typeof value === 'undefined') {
-            return string;
+            continue;
           }
 
-          return `<data value="${key}" class="i18n-devtools__mark">${value}</data>`;
-        });
+          if (match.index > prevIndex) {
+            const textNode = document.createTextNode(match.input.slice(prevIndex, match.index));
+            parent.insertBefore(textNode, node);
+          }
+          prevIndex = regexp.lastIndex;
 
-        // clone NodeList because insertBefore will update NodeList
-        Array.prototype.slice.call(tmpElement.childNodes, 0).forEach(n => {
-          parent.insertBefore(n, node);
-        });
+          const dataElement = document.createElement('data');
+          dataElement.textContent = value;
+          dataElement.classList.add(className);
+          dataElement.classList.add(`${className}--text`);
+          dataElement.setAttribute('value', key);
+          parent.insertBefore(dataElement, node);
+        }
+
+        if (prevIndex < text.length) {
+          const textNode = document.createTextNode(text.slice(prevIndex));
+          parent.insertBefore(textNode, node);
+        }
 
         parent.removeChild(node);
       });
@@ -116,7 +129,8 @@ export default ({ startTag, endTag, extras }) => {
 
         if (!isEmpty(replaced)) {
           node.setAttribute('data-i18n', JSON.stringify(replaced));
-          node.classList.add('i18n-devtools__mark');
+          node.classList.add(className);
+          node.classList.add(`${className}--extras`);
         }
       });
     }

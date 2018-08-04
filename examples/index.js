@@ -8,15 +8,23 @@ Vue.use(VueI18n);
 const messages = {
   zh: {},
   en: {
-    origin: 'Origin',
+    functional: 'Functional component',
     devtools: 'Devtools',
     directive: 'Use v-t directive',
     computed: 'Use computed',
     node: "I'm a text node",
-    value: 'Input value',
-    placeholder: 'Input placeholder',
     customAttribute: 'Custom attribute',
-    specialCharacters: 'special characters: /\\~!@#$%^&*()_+\'"'
+    specialCharacters: 'special characters: /\\~!@#$%^&*()_+\'"',
+    html: '<h1>html tag</h1>',
+    form: {
+      select: '<option> will not be highlighted',
+      options: {
+        0: 'option 0',
+        1: 'option 1',
+        2: 'option 2'
+      },
+      placeholder: 'Input placeholder'
+    }
   }
 };
 
@@ -32,12 +40,6 @@ Vue.use(VueI8nDevtools, {
 
 new Vue({
   i18n,
-  el: '#origin',
-  render: h => h(List, { props: { title: 'origin' } })
-});
-
-new Vue({
-  i18n,
   el: '#devtools',
-  render: h => h(List, { props: { title: 'devtools' } })
+  render: h => h(List, { props: { title: 'functional' } })
 });
