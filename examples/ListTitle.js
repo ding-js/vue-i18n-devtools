@@ -5,6 +5,6 @@ export default {
     title: String
   },
   render(h, ctx) {
-    return <h2>Functional component: {ctx.props.title}</h2>;
+    return <h2>Title: {ctx.props.title}</h2>;
   }
 };

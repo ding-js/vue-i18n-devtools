@@ -6,12 +6,16 @@ const defaultOptions = {
   startTag: '<% ',
   endTag: ' %>',
   props: ['value'],
-  attrs: ['placeholder', 'title']
+  attrs: ['placeholder', 'title'],
+  className: 'i18n-devtools__mark'
 };
 
 export default {
   install(Vue, options) {
-    const { i18n, startTag, endTag, props, attrs } = { ...defaultOptions, ...options };
+    const { i18n, startTag, endTag, props, attrs, className } = {
+      ...defaultOptions,
+      ...options
+    };
     if (!i18n || !i18n._translate) return;
     const extras = [];
 
@@ -27,7 +31,8 @@ export default {
       mixin({
         startTag,
         endTag,
-        extras
+        extras,
+        className
       })
     );
   }
