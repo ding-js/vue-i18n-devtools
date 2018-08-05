@@ -11,7 +11,10 @@ export default {
         <ListTitle title={this.$t(this.title)} />
         <li v-t="directive" />
         <li>{this.computedValue}</li>
-        <li>Text node: {this.$t('node')} - {this.$t('node')} too</li>
+        <li>
+          {this.$t('concat.label')}: {this.$t('concat.node', [1])} - {this.$t('concat.node', [2])}
+          {' .'}
+        </li>
         <li data-custom-attribute={this.$t('customAttribute')} v-t="customAttribute" />
         <li v-t="specialCharacters" />
         <li v-t="html" />

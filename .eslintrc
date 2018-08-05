@@ -4,5 +4,13 @@
     "browser": true
   },
   "extends": ["eslint:recommended"],
-  "parser": "babel-eslint"
+  "parser": "babel-eslint",
+  "rules": {
+    "no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "h"
+      }
+    ]
+  }
 }
