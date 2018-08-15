@@ -1,5 +1,7 @@
-import mixin from './mixin';
-let t;
+import { escapeRegExp, Processor } from './utils';
+import warp from './wrap';
+let translate;
+let render;
 
 const defaultOptions = {
   i18n: null,
@@ -12,28 +14,42 @@ const defaultOptions = {
 
 export default {
   install(Vue, options) {
-    const { i18n, startTag, endTag, props, attrs, className } = {
+    const { i18n, startTag, endTag, props, attrs } = {
       ...defaultOptions,
       ...options
     };
     if (!i18n || !i18n._translate) return;
+    const processor = new Processor({ startTag, endTag });
     const extras = [];
 
     props.forEach(p => extras.push({ type: 'prop', name: p }));
     attrs.forEach(a => extras.push({ type: 'attr', name: a }));
 
-    t = i18n._translate;
+    translate = i18n._translate;
+    render = Vue.prototype._render;
     i18n._translate = function() {
-      const result = t.apply(this, arguments);
-      return startTag + arguments[3] + '|' + result + endTag;
+      const result = translate.apply(this, arguments);
+      return processor.serialize(arguments[3], result);
     };
-    Vue.mixin(
-      mixin({
-        startTag,
-        endTag,
+
+    Vue.prototype._render = function() {
+      const vnode = render.apply(this._renderProxy, arguments);
+
+      return warp({
+        vm: this,
+        vnode,
         extras,
-        className
-      })
-    );
+        processor
+      });
+    };
+
+    // Vue.mixin(
+    //   mixin({
+    //     startTag,
+    //     endTag,
+    //     extras,
+    //     className
+    //   })
+    // );
   }
 };

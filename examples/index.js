@@ -69,6 +69,11 @@ new Vue({
   render(h) {
     return (
       <div>
+        <div>
+          <p>
+            <span>aaa</span>
+          </p>
+        </div>
         <Action />
         <List title="functional" />
       </div>
