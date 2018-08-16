@@ -65,7 +65,6 @@
 // };
 
 const cloneReplacedChild = (VNode, child, processor) => {
-  console.log(child);
   if (child.children) {
     return new VNode(
       child.tag,
