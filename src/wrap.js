@@ -1,74 +1,71 @@
-// import { isEmpty } from './utils';
+import { isPlainObject, isString } from './utils';
 
-// const createdReplacedObject = data => {
-//   const type = Object.prototype.toString
-//     .call(data)
-//     .slice(8, -1)
-//     .toLowerCase();
+const cloneReplacedObject = (VNode, object, processor) => {
+  if (!isPlainObject(object)) {
+    return object;
+  }
+  const result = Object.create(Object.getPrototypeOf(object));
+  Object.keys(object).forEach(key => {
+    const value = object[key];
 
-//   switch (type) {
-//     case 'string':
-//       {
-//         let match;
-//         let prevIndex = 0;
+    if (isPlainObject(value)) {
+      const data = cloneReplacedObject(VNode, value, processor);
+      if (data && data.__replaced___) {
+        result.__replaced___ = (result.__replaced___ || []).concat(data.__replaced___);
+        delete data.__replaced___;
+      }
+      result[key] = data;
+    } else if (isString(value)) {
+      const match = processor.resolve(value);
+      if (match.length) {
+        const replaced = [];
+        result[key] = match
+          .map(m => {
+            switch (m.type) {
+              case 'text':
+                return m.value;
+              case 'mark':
+                replaced.push(m.data);
+                return m.data.value;
+              default:
+                return '';
+            }
+          })
+          .join('');
+        if (replaced.length) {
+          result.__replaced___ = (result.__replaced___ || []).concat(replaced);
+        }
+      } else {
+        result[key] = value;
+      }
+    } else {
+      result[key] = value;
+    }
+  });
+  return result;
+};
 
-//         while ((match = regexp.exec(text)) !== null) {
-//           const mark = match[1];
-//           const [key, value] = mark.split('|');
+const doCloneReplacedObject = (VNode, object, processor) => {
+  const data = cloneReplacedObject(VNode, object, processor);
 
-//           if (typeof value === 'undefined') {
-//             continue;
-//           }
+  if (data && data.__replaced___) {
+    const { className } = processor.options;
+    data.attrs = data.attrs || {};
+    data.class = data.class || {};
 
-//           if (match.index > prevIndex) {
-//             const textNode = document.createTextNode(match.input.slice(prevIndex, match.index));
-//             parent.insertBefore(textNode, node);
-//           }
-//           prevIndex = regexp.lastIndex;
-
-//           const dataElement = document.createElement('data');
-//           dataElement.textContent = value;
-//           dataElement.classList.add(className);
-//           dataElement.classList.add(`${className}--text`);
-//           dataElement.setAttribute('value', key);
-//           parent.insertBefore(dataElement, node);
-//         }
-//       }
-//       break;
-//     case 'object':
-//     case 'array':
-//     default:
-//       return data;
-//   }
-// };
-
-// const cloneReplacedVNode = (VNode, vnode) => {
-//   const cloned = new VNode(
-//     vnode.tag,
-//     vnode.data,
-//     vnode.children,
-//     vnode.text,
-//     vnode.elm,
-//     vnode.context,
-//     vnode.componentOptions,
-//     vnode.asyncFactory
-//   );
-//   cloned.ns = vnode.ns;
-//   cloned.isStatic = vnode.isStatic;
-//   cloned.key = vnode.key;
-//   cloned.isComment = vnode.isComment;
-//   cloned.fnContext = vnode.fnContext;
-//   cloned.fnOptions = vnode.fnOptions;
-//   cloned.fnScopeId = vnode.fnScopeId;
-//   cloned.isCloned = true;
-//   return cloned;
-// };
+    data.class[className] = true;
+    data.class[className + '--extras'] = true;
+    data.attrs['data-i18n-devtools'] = JSON.stringify(data.__replaced___);
+    delete data.__replaced___;
+  }
+  return data;
+};
 
 const cloneReplacedChild = (VNode, child, processor) => {
   if (child.children) {
     return new VNode(
       child.tag,
-      child.data,
+      doCloneReplacedObject(VNode, child.data, processor),
       cloneReplacedChildren(VNode, child.children, processor),
       child.text,
       child.elm,
@@ -79,18 +76,29 @@ const cloneReplacedChild = (VNode, child, processor) => {
   }
 
   if (!child.tag && child.text) {
+    const { className } = processor.options;
     const match = processor.resolve(child.text);
 
-    if (match.length > 0) {
+    if (match.length) {
       return match
         .map(m => {
           switch (m.type) {
             case 'text':
               return new VNode(undefined, undefined, undefined, m.value);
             case 'mark':
-              return new VNode('data', undefined, [
-                new VNode(undefined, undefined, undefined, m.data.value)
-              ]);
+              return new VNode(
+                'data',
+                {
+                  class: {
+                    [className]: true,
+                    [className + '--text']: true
+                  },
+                  attrs: {
+                    value: m.data.key
+                  }
+                },
+                [new VNode(undefined, undefined, undefined, m.data.value)]
+              );
             default:
               break;
           }
@@ -99,7 +107,16 @@ const cloneReplacedChild = (VNode, child, processor) => {
     }
   }
 
-  return child;
+  return new VNode(
+    child.tag,
+    doCloneReplacedObject(VNode, child.data, processor),
+    child.children,
+    child.text,
+    child.elm,
+    child.context,
+    child.componentOptions,
+    child.asyncFactory
+  );
 };
 
 const cloneReplacedChildren = (VNode, children, processor) => {
@@ -111,16 +128,18 @@ const cloneReplacedChildren = (VNode, children, processor) => {
   return clonedChildren;
 };
 
-const createReplacedElement = ({ vm, vnode, processor, extras }) => {
+const createReplacedElement = ({ vm, vnode, processor }) => {
   const VNode = vnode.__proto__.constructor;
-  // if (vnode.data && vnode.data.attrs && !isEmpty(vnode.data.attrs)) {
-  // }
 
   const children = Array.isArray(vnode.children)
     ? cloneReplacedChildren(VNode, vnode.children, processor)
     : vnode.children;
 
-  return vm.$createElement(vnode.tag, vnode.data, children);
+  return vm.$createElement(
+    vnode.tag,
+    doCloneReplacedObject(VNode, vnode.data, processor),
+    children
+  );
 };
 
 export default createReplacedElement;
