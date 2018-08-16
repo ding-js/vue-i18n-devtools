@@ -16,6 +16,13 @@ export function isEmpty(value) {
   return true;
 }
 
+export function replaceDirectiveNode(el, processor) {
+  const match = processor.resolve(el._vt || '');
+  if (el && match.length > 0) {
+    // el.innerHTML = match.map(m => `<data>${m.data.value}</data>`).join('');
+  }
+}
+
 export class Processor {
   constructor(options) {
     const { startTag, endTag } = options;
@@ -28,6 +35,7 @@ export class Processor {
     const { startTag, endTag } = this.options;
     return startTag + key + '|' + value + endTag;
   }
+
   resolve(string) {
     const { regexp, hasRegexp } = this;
     if (typeof string !== 'string' || !hasRegexp.test(string)) {

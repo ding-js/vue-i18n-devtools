@@ -1,7 +1,8 @@
-import { escapeRegExp, Processor } from './utils';
+import { Processor, replaceDirectiveNode } from './utils';
 import warp from './wrap';
 let translate;
 let render;
+let directive;
 
 const defaultOptions = {
   i18n: null,
@@ -27,6 +28,8 @@ export default {
 
     translate = i18n._translate;
     render = Vue.prototype._render;
+    directive = Vue.directive('t');
+
     i18n._translate = function() {
       const result = translate.apply(this, arguments);
       return processor.serialize(arguments[3], result);
@@ -42,6 +45,17 @@ export default {
         processor
       });
     };
+
+    Vue.directive('t', {
+      bind(el) {
+        directive.bind.apply(null, arguments);
+        replaceDirectiveNode(el, processor);
+      },
+      update(el) {
+        directive.update.apply(null, arguments);
+        replaceDirectiveNode(el, processor);
+      }
+    });
 
     // Vue.mixin(
     //   mixin({
