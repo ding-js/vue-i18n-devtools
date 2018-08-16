@@ -1,4 +1,4 @@
-import { Processor, replaceDirectiveNode } from './utils';
+import { Processor, replaceChildNode } from './utils';
 import warp from './wrap';
 let translate;
 let render;
@@ -8,23 +8,18 @@ const defaultOptions = {
   i18n: null,
   startTag: '<% ',
   endTag: ' %>',
-  props: ['value'],
-  attrs: ['placeholder', 'title'],
   className: 'i18n-devtools__mark'
 };
 
 export default {
   install(Vue, options) {
-    const { i18n, startTag, endTag, props, attrs } = {
+    const { i18n, startTag, endTag, className } = {
       ...defaultOptions,
       ...options
     };
     if (!i18n || !i18n._translate) return;
-    const processor = new Processor({ startTag, endTag });
+    const processor = new Processor({ startTag, endTag, className });
     const extras = [];
-
-    props.forEach(p => extras.push({ type: 'prop', name: p }));
-    attrs.forEach(a => extras.push({ type: 'attr', name: a }));
 
     translate = i18n._translate;
     render = Vue.prototype._render;
@@ -49,21 +44,12 @@ export default {
     Vue.directive('t', {
       bind(el) {
         directive.bind.apply(null, arguments);
-        replaceDirectiveNode(el, processor);
+        replaceChildNode(el, undefined, el._vt, processor);
       },
       update(el) {
         directive.update.apply(null, arguments);
-        replaceDirectiveNode(el, processor);
+        replaceChildNode(el, undefined, el._vt, processor);
       }
     });
-
-    // Vue.mixin(
-    //   mixin({
-    //     startTag,
-    //     endTag,
-    //     extras,
-    //     className
-    //   })
-    // );
   }
 };

@@ -11,7 +11,7 @@ const messages = {
     functional: '函数式组件',
     directive: '使用指令',
     computed: '使用计算属性',
-    customAttribute: '自定义 HTML 属性',
+    customAttribute: '自定义 HTML 属性，如 data-custom-attribute',
     specialCharacters: '特殊字符: /\\~!@#$%^&*()_+\'"',
     html: 'HTML 转义: <h1>HTML</h1>',
     concat: {
@@ -33,7 +33,7 @@ const messages = {
     devtools: 'Devtools',
     directive: 'Use v-t directive',
     computed: 'Use computed',
-    customAttribute: 'Custom HTML attribute',
+    customAttribute: 'Custom HTML attribute e.g. data-custom-attribute',
     specialCharacters: 'Special characters: /\\~!@#$%^&*()_+\'"|{};<>?',
     html: 'Escape HTML: <h1>HTML</h1>',
     concat: {
@@ -69,11 +69,6 @@ new Vue({
   render(h) {
     return (
       <div>
-        <div>
-          <p>
-            <span>aaa</span>
-          </p>
-        </div>
         <Action />
         <List title="functional" />
       </div>
