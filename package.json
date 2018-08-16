@@ -3,11 +3,14 @@
   "version": "0.0.1",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=development webpack-dev-server --config build/webpack.dev.config.js"
+    "start": "cross-env NODE_ENV=development webpack-dev-server --config build/webpack.dev.config.js",
+    "build": "node build"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.55",
+    "@babel/plugin-external-helpers": "^7.0.0-rc.1",
     "@babel/plugin-syntax-jsx": "^7.0.0-beta.55",
+    "@babel/plugin-transform-runtime": "^7.0.0-rc.1",
     "@babel/preset-env": "^7.0.0-beta.55",
     "babel-eslint": "^8.2.6",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",
@@ -16,8 +19,12 @@
     "cross-env": "^5.2.0",
     "eslint": "^5.2.0",
     "html-webpack-plugin": "^3.2.0",
+    "rollup": "^0.64.1",
+    "rollup-plugin-babel": "^4.0.0-beta.8",
+    "rollup-plugin-replace": "^2.0.0",
     "ts-loader": "^4.4.2",
     "typescript": "^3.0.1",
+    "uglify-js": "^3.4.7",
     "vue": "^2.5.16",
     "vue-i18n": "^8.0.0",
     "webpack": "^4.16.3",
@@ -25,6 +32,7 @@
     "webpack-dev-server": "^3.1.5"
   },
   "dependencies": {
+    "@babel/runtime": "^7.0.0-rc.1",
     "throttle-debounce": "^2.0.1"
   }
 }

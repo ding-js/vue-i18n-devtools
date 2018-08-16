@@ -1,8 +1,8 @@
 {
-  "presets": ["@babel/env"],
+  "presets": [["@babel/env", { "modules": false }]],
   "env": {
     "development": {
-      "plugins": ["transform-vue-jsx"]
+      "plugins": ["transform-vue-jsx", "@babel/plugin-external-helpers"]
     }
   }
 }
