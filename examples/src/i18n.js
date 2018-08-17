@@ -9,7 +9,7 @@ const messages = {
     directive: '使用指令',
     computed: '使用计算属性',
     customAttribute: '自定义 HTML 属性，如 data-custom-attribute',
-    specialCharacters: '特殊字符: /\\~!@#$%^&*()_+\'"',
+    specialCharacters: '特殊字符: /\\~!@#$%^&*()_+\'"|{};<>?',
     html: 'HTML 转义: <h1>HTML</h1>',
     concat: {
       label: '字符串拼接',

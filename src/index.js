@@ -1,4 +1,5 @@
-import { Processor, replaceChildNode } from './utils';
+import { replaceChildNode } from './utils';
+import Processor from './processor';
 import warp from './wrap';
 let translate;
 let render;

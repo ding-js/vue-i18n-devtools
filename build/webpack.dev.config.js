@@ -31,6 +31,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './examples/index.html',
+      favicon: './examples/favicon.ico',
       minify: true
     }),
     new ScriptExtHtmlWebpackPlugin({
