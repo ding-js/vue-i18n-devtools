@@ -7,22 +7,22 @@ const uglify = require('uglify-js');
 const entries = [
   {
     format: 'cjs',
-    file: './lib/index.common.js'
+    file: './dist/index.common.js'
   },
   {
     format: 'es',
-    file: './lib/index.esm.js'
+    file: './dist/index.esm.js'
   },
   {
     format: 'umd',
     name: 'VueI18nDevTools',
-    file: './lib/index.js',
+    file: './dist/index.js',
     env: 'production'
   },
   {
     format: 'umd',
     name: 'VueI18nDevTools',
-    file: './lib/index.min.js',
+    file: './dist/index.min.js',
     env: 'development'
   }
 ];
@@ -62,6 +62,17 @@ async function build(outputOptions) {
   }
 
   fs.writeFileSync(outputOptions.file, result, 'utf8');
+  console.log(`build ${outputOptions.file} success.`);
+}
+
+try {
+  const stats = fs.statSync('./dist');
+  if (!stats.isDirectory()) {
+    console.error('dist is not a folder');
+    return;
+  }
+} catch (e) {
+  fs.mkdirSync('./dist');
 }
 
 entries.reduce((chain, e) => {

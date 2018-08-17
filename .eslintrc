@@ -12,6 +12,7 @@
       {
         "argsIgnorePattern": "h"
       }
-    ]
+    ],
+    "no-console": "warn"
   }
 }

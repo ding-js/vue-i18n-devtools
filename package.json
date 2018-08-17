@@ -1,15 +1,15 @@
 {
   "name": "vue-i18n-devtools",
   "version": "0.0.0",
-  "main": "lib/index.common.js",
-  "module": "lib/index.esm.js",
+  "main": "dist/index.common.js",
+  "module": "dist/index.esm.js",
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --config build/webpack.dev.config.js",
-    "build": "node build && npm run build:example",
+    "build": "rimraf dist && node build && npm run build:example",
     "build:example": "rimraf examples/dist && cross-env NODE_ENV=production webpack --config build/webpack.dev.config.js"
   },
   "files": [
-    "lib"
+    "dist"
   ],
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.55",
