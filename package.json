@@ -6,15 +6,17 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --config build/webpack.dev.config.js",
     "build": "rimraf dist && node build && npm run build:example",
-    "build:example": "rimraf examples/dist && cross-env NODE_ENV=production webpack --config build/webpack.dev.config.js"
+    "build:example": "rimraf examples/dist && cross-env NODE_ENV=production webpack --config build/webpack.dev.config.js",
+    "test": "jest"
   },
   "files": [
     "dist"
   ],
   "devDependencies": {
     "@babel/core": "^7.0.0-rc.1",
-    "@babel/plugin-syntax-jsx": "^7.0.0-beta.55",
-    "@babel/preset-env": "^7.0.0-beta.55",
+    "@babel/plugin-syntax-jsx": "^7.0.0-rc.1",
+    "@babel/preset-env": "^7.0.0-rc.1",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^8.2.6",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",
     "babel-jest": "^23.4.2",

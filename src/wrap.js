@@ -16,7 +16,7 @@ const cloneReplacedObject = (VNode, object, processor) => {
       }
       result[key] = data;
     } else if (isString(value)) {
-      const match = processor.resolve(value);
+      const match = processor.parse(value);
       if (match.length) {
         const replaced = [];
         result[key] = match
@@ -77,7 +77,7 @@ const cloneReplacedChild = (VNode, child, processor) => {
 
   if (!child.tag && child.text) {
     const { className } = processor.options;
-    const match = processor.resolve(child.text);
+    const match = processor.parse(child.text);
 
     if (match.length) {
       return match

@@ -13,7 +13,7 @@ export default class Processor {
     return startTag + key + '|' + value + endTag;
   }
 
-  resolve(string) {
+  parse(string) {
     const { regexp, hasRegexp } = this;
     if (!isString(string) || !hasRegexp.test(string)) {
       return [];
@@ -39,7 +39,7 @@ export default class Processor {
         // 普通文本
         results.push({
           type: 'text',
-          value: match.input.slice(prevIndex, match.index)
+          value: string.slice(prevIndex, match.index)
         });
       }
 
@@ -54,6 +54,14 @@ export default class Processor {
       });
 
       prevIndex = regexp.lastIndex;
+    }
+
+    // 被翻译的文本后的内容
+    if (prevIndex > 0 && prevIndex < string.length - 1) {
+      results.push({
+        type: 'text',
+        value: string.slice(prevIndex)
+      });
     }
 
     return results;

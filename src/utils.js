@@ -33,7 +33,7 @@ export function replaceChildNode(el, child, string, processor) {
   if (!el || !string) {
     return;
   }
-  const match = processor.resolve(string);
+  const match = processor.parse(string);
   if (match.length) {
     if (!child && el.childNodes) {
       el.childNodes.forEach(v => el.removeChild(v));
