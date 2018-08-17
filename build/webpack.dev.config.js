@@ -4,10 +4,13 @@ const isProd = process.env.NODE_ENV === 'production';
 const isDev = process.env.NODE_ENV === 'development';
 
 module.exports = {
-  entry: './examples/src/index.js',
+  entry: {
+    devtools: './examples/src/index.js',
+    origin: './examples/src/origin'
+  },
   output: {
     path: path.resolve(__dirname, '../examples/dist'),
-    filename: 'examples.js'
+    filename: '[name].js'
   },
   mode: isDev ? 'development' : 'production',
   module: {
@@ -27,7 +30,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './examples/src/index.html',
+      template: './examples/index.html',
       minify: true
     })
   ],
