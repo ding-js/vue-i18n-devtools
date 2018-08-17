@@ -1,16 +1,16 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const isProd = process.env.NODE_ENV === 'production';
+const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const isDev = process.env.NODE_ENV === 'development';
 
 module.exports = {
   entry: {
-    devtools: './examples/src/index.js',
-    origin: './examples/src/origin'
+    index: './examples/src/index.js',
+    origin: './examples/src/origin.js'
   },
   output: {
     path: path.resolve(__dirname, '../examples/dist'),
-    filename: '[name].js'
+    filename: isDev ? '[name].js' : '[name].[chunkhash:8].js'
   },
   mode: isDev ? 'development' : 'production',
   module: {
@@ -32,6 +32,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './examples/index.html',
       minify: true
+    }),
+    new ScriptExtHtmlWebpackPlugin({
+      defaultAttribute: 'sync',
+      async: /^origin\.[0-9a-f]{8}\.js$/
     })
   ],
   devServer: {

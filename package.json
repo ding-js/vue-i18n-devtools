@@ -5,8 +5,8 @@
   "module": "lib/index.esm.js",
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --config build/webpack.dev.config.js",
-    "build": "node build",
-    "build:example": "cross-env NODE_ENV=production webpack --config build/webpack.dev.config.js"
+    "build": "node build && npm run build:example",
+    "build:example": "rimraf examples/dist && cross-env NODE_ENV=production webpack --config build/webpack.dev.config.js"
   },
   "files": [
     "lib"
@@ -26,6 +26,7 @@
     "rollup": "^0.64.1",
     "rollup-plugin-babel": "^4.0.0-beta.8",
     "rollup-plugin-replace": "^2.0.0",
+    "script-ext-html-webpack-plugin": "^2.0.1",
     "ts-loader": "^4.4.2",
     "typescript": "^3.0.1",
     "uglify-js": "^3.4.7",
