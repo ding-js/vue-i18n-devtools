@@ -32,7 +32,9 @@ async function build(outputOptions) {
     input: './src/index.js',
     plugins: [
       babel({
-        exclude: 'node_modules/**'
+        presets: [['@babel/env', { modules: false }]],
+        exclude: 'node_modules/**',
+        babelrc: false
       })
     ]
   };

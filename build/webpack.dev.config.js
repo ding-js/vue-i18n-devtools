@@ -17,14 +17,7 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              plugins: ['transform-vue-jsx']
-            }
-          }
-        ]
+        use: ['babel-loader']
       }
     ]
   },
