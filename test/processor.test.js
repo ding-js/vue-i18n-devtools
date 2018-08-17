@@ -9,10 +9,8 @@ it('init', () => {
   const p = new Processor(defaultOptions);
 
   expect(p.options).toEqual(defaultOptions);
-  expect(p.regexp instanceof RegExp).toBe(true);
-  expect(p.hasRegexp instanceof RegExp).toBe(true);
   expect(p.regexp.source).toBe('<% ([\\s\\S]+?) %>');
-  expect(p.regexp.source === p.hasRegexp.source).toBe(true);
+  expect(p.regexp.source).toBe(p.hasRegexp.source);
 });
 
 it('serialize', () => {
@@ -36,6 +34,12 @@ it('parse', () => {
     { type: 'text', value: 'before' },
     { data: { key: 'key', value: 'value' }, type: 'mark', value: 'key|value' },
     { type: 'text', value: 'after' }
+  ]);
+
+  // 暂时无法正确判断这种情况，考虑传入 i18n 实例校验 key/value 是否匹配
+  expect(p.parse('<% <% key|value %> %>')).toEqual([
+    { data: { key: '<% key', value: 'value' }, type: 'mark', value: '<% key|value' },
+    { type: 'text', value: ' %>' }
   ]);
 
   expect(p.parse('<% key&value %>')).toEqual([]);

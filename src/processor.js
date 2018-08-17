@@ -23,7 +23,7 @@ export default class Processor {
     let prevIndex = 0;
 
     while ((match = regexp.exec(string)) !== null) {
-      const mark = match[1] || '';
+      const mark = match[1];
       const data = mark.split('|');
 
       if (data.length < 2) {
