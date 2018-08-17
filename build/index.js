@@ -32,8 +32,7 @@ async function build(outputOptions) {
     input: './src/index.js',
     plugins: [
       babel({
-        exclude: 'node_modules/**',
-        externalHelpers: true
+        exclude: 'node_modules/**'
       })
     ]
   };

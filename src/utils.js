@@ -21,7 +21,7 @@ export function isEmpty(value) {
 }
 
 export function isString(value) {
-  return typeof value === 'string' || getTag(value) == '[object String]';
+  return typeof value === 'string' || getTag(value) === '[object String]';
 }
 
 export function isPlainObject(value) {
@@ -32,6 +32,7 @@ export function isPlainObject(value) {
     return true;
   }
   let proto = value;
+  // {} -> Object -> null
   while (Object.getPrototypeOf(proto) !== null) {
     proto = Object.getPrototypeOf(proto);
   }

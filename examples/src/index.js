@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
-import VueI8nDevtools from '../src';
+import VueI8nDevtools from '../../src';
 import List from './List';
 import Action from './Action';
 

@@ -4,18 +4,30 @@ const isProd = process.env.NODE_ENV === 'production';
 const isDev = process.env.NODE_ENV === 'development';
 
 module.exports = {
-  entry: './examples/index.js',
+  entry: './examples/src/index.js',
   output: {
-    path: path.resolve(__dirname, '../dist'),
+    path: path.resolve(__dirname, '../examples/dist'),
     filename: 'examples.js'
   },
   mode: isDev ? 'development' : 'production',
   module: {
-    rules: [{ test: /\.js$/, use: 'babel-loader' }]
+    rules: [
+      {
+        test: /\.js$/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              plugins: ['transform-vue-jsx']
+            }
+          }
+        ]
+      }
+    ]
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './examples/index.html',
+      template: './examples/src/index.html',
       minify: true
     })
   ],

@@ -1,11 +1,12 @@
 {
   "name": "vue-i18n-devtools",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "main": "lib/index.common.js",
   "module": "lib/index.esm.js",
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --config build/webpack.dev.config.js",
-    "build": "node build"
+    "build": "node build",
+    "build:example": "cross-env NODE_ENV=production webpack --config build/webpack.dev.config.js"
   },
   "files": [
     "lib"
