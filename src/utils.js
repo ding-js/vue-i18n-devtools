@@ -29,7 +29,11 @@ export function isPlainObject(value) {
   return Object.getPrototypeOf(value) === proto;
 }
 
-export function replaceChildNode(el, child, string, processor) {
+export function isPrimitive(value) {
+  return typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean';
+}
+
+export function replaceChildNode(el, child, string, processor, className) {
   if (!el || !string) {
     return;
   }
@@ -38,7 +42,6 @@ export function replaceChildNode(el, child, string, processor) {
     if (!child && el.childNodes) {
       el.childNodes.forEach(v => el.removeChild(v));
     }
-    const { className } = processor.options;
     match.forEach(m => {
       let node;
       switch (m.type) {

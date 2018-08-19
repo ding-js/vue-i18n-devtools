@@ -5,6 +5,11 @@ export default {
     title: String
   },
   render(h, ctx) {
-    return <h2>Title: {ctx.props.title}</h2>;
+    return (
+      <div>
+        <h2>{ctx.props.title}</h2>
+        <h2>{ctx.parent.$t('functional')}</h2>
+      </div>
+    );
   }
 };

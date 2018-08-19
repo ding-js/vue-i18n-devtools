@@ -15,7 +15,7 @@ new Vue({
     return (
       <div>
         <Action />
-        <h2>Use devtools</h2>
+        <h2>Devtools output</h2>
         <List title="functional" />
       </div>
     );

@@ -1,9 +1,9 @@
 import { replaceChildNode } from './utils';
 import Processor from './processor';
-import warp from './wrap';
-let translate;
-let render;
-let directive;
+import genCreateElement from './create-element';
+let _translate;
+let _directive;
+let _constructor;
 
 const defaultOptions = {
   i18n: null,
@@ -19,37 +19,48 @@ export default {
       ...options
     };
     if (!i18n || !i18n._translate) return;
-    const processor = new Processor({ startTag, endTag, className });
-    const extras = [];
+    const VNode = new Vue().$createElement().constructor;
+    console.dir(VNode);
 
-    translate = i18n._translate;
-    render = Vue.prototype._render;
-    directive = Vue.directive('t');
+    const processor = new Processor({ startTag, endTag });
+    const h = genCreateElement({ className, processor });
+
+    _translate = i18n._translate;
+    _directive = Vue.directive('t');
+    _constructor = VNode.constructor;
 
     i18n._translate = function() {
-      const result = translate.apply(this, arguments);
+      const result = _translate.apply(this, arguments);
       return processor.serialize(arguments[3], result);
     };
 
-    Vue.prototype._render = function() {
-      const vnode = render.apply(this._renderProxy, arguments);
+    // VNode.constructor = function() {
+    //   console.log(arguments);
+    //   return _constructor.apply(this, arguments);
+    // };
 
-      return warp({
-        vm: this,
-        vnode,
-        extras,
-        processor
-      });
-    };
+    // Vue.mixin({
+    //   beforeCreate() {
+    //     const vm = this;
+    //     const createElement = vm.$createElement;
+    //     vm.$createElement = function() {
+    //       return h({
+    //         vm,
+    //         createElement,
+    //         args: arguments
+    //       });
+    //     };
+    //   }
+    // });
 
     Vue.directive('t', {
       bind(el) {
-        directive.bind.apply(null, arguments);
-        replaceChildNode(el, undefined, el._vt, processor);
+        _directive.bind.apply(this, arguments);
+        replaceChildNode(el, undefined, el._vt, processor, className);
       },
       update(el) {
-        directive.update.apply(null, arguments);
-        replaceChildNode(el, undefined, el._vt, processor);
+        _directive.update.apply(this, arguments);
+        replaceChildNode(el, undefined, el._vt, processor, className);
       }
     });
   }
