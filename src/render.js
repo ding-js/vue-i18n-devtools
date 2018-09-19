@@ -1,15 +1,42 @@
-import { isPlainObject, isString, isPrimitive } from './utils';
+import { isPlainObject, isString } from './utils';
 
 export default ({ processor, className, VNode }) => {
   function createModifiedNode(vnode) {
     if (!vnode.tag && vnode.text) {
       return createModifiedTextNode(vnode.text);
     }
-    const [modifiedData, modifiedComponentOptions] = [vnode.data, vnode.componentOptions].map(
-      createModifiedObject
-    );
+    const modifiedData = createModifiedObject(vnode.data);
+    const modifiedComponentOptions = createModifiedObject(vnode.componentOptions);
     const data = modifiedData.value;
     const componentOptions = modifiedComponentOptions.value;
+
+    if ([modifiedData, modifiedComponentOptions].some(v => v.modified.length)) {
+      const modifiedProps = [modifiedData, modifiedComponentOptions].reduce(
+        (array, v) => array.concat(v.modified),
+        []
+      );
+
+      const classNames = [className, `${className}--props`];
+      // 添加 className
+      if (!data.class) {
+        data.class = classNames;
+      } else if (isString(data.class)) {
+        data.class += ' ' + classNames.join(' ');
+      } else if (Array.isArray(data.class)) {
+        data.class = data.class.concat(classNames);
+      } else {
+        classNames.forEach(n => (data.class[n] = true));
+      }
+
+      if (!data.attrs) {
+        data.attrs = {};
+      }
+
+      // 添加被修改的属性信息
+      data.attrs['data-i18n-devtools'] = JSON.stringify(modifiedProps);
+    }
+
+    // clone vnode
     const modified = new VNode(
       vnode.tag,
       data,
@@ -38,6 +65,7 @@ export default ({ processor, className, VNode }) => {
       const child = createModifiedNode(vnodes[i]);
 
       if (Array.isArray(child)) {
+        // 当有匹配的文本节点，会返回一个数组
         child.forEach(v => res.push(v));
       } else {
         res.push(child);
@@ -67,7 +95,10 @@ export default ({ processor, className, VNode }) => {
             return new VNode(
               'data',
               {
-                class: [className, `${className}--text`]
+                class: [className, `${className}--text`],
+                attrs: {
+                  value: match.data.key
+                }
               },
               undefined,
               match.data.value

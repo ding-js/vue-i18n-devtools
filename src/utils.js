@@ -29,10 +29,6 @@ export function isPlainObject(value) {
   return Object.getPrototypeOf(value) === proto;
 }
 
-export function isPrimitive(value) {
-  return typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean';
-}
-
 export function replaceChildNode(el, child, string, processor, className) {
   if (!el || !string) {
     return;

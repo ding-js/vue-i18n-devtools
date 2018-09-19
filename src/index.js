@@ -36,15 +36,15 @@ export default {
       return render.call(this, vnode);
     };
 
-    // Vue.directive('t', {
-    //   bind(el) {
-    //     _directive.bind.apply(this, arguments);
-    //     replaceChildNode(el, undefined, el._vt, processor, className);
-    //   },
-    //   update(el) {
-    //     _directive.update.apply(this, arguments);
-    //     replaceChildNode(el, undefined, el._vt, processor, className);
-    //   }
-    // });
+    Vue.directive('t', {
+      bind(el) {
+        _directive.bind.apply(this, arguments);
+        replaceChildNode(el, undefined, el._vt, processor, className);
+      },
+      update(el) {
+        _directive.update.apply(this, arguments);
+        replaceChildNode(el, undefined, el._vt, processor, className);
+      }
+    });
   }
 };
