@@ -36,11 +36,15 @@ export default ({ processor, className, VNode }) => {
       data.attrs['data-i18n-devtools'] = JSON.stringify(modifiedProps);
     }
 
+    if (componentOptions && componentOptions.children) {
+      componentOptions.children = createModifiedNodes(componentOptions.children);
+    }
+
     // clone vnode
     const modified = new VNode(
       vnode.tag,
       data,
-      vnode.children,
+      vnode.children ? createModifiedNodes(vnode.children) : undefined,
       vnode.text,
       vnode.elm,
       vnode.context,
@@ -48,12 +52,15 @@ export default ({ processor, className, VNode }) => {
       vnode.asyncFactory
     );
 
-    if (vnode.children) {
-      modified.children = createModifiedNodes(vnode.children);
-    }
-    if (componentOptions && componentOptions.children) {
-      componentOptions.children = createModifiedNodes(componentOptions.children);
-    }
+    modified.ns = vnode.ns
+    modified.isStatic = vnode.isStatic
+    modified.key = vnode.key
+    modified.isComment = vnode.isComment
+    modified.fnContext = vnode.fnContext
+    modified.fnOptions = vnode.fnOptions
+    modified.fnScopeId = vnode.fnScopeId
+    modified.asyncMeta = vnode.asyncMeta
+    // modified.isCloned = true
 
     return modified;
   }

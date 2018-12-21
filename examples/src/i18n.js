@@ -23,7 +23,8 @@ const messages = {
         2: '选项 2'
       },
       placeholder: '输入框 placeholder'
-    }
+    },
+    component: '组件'
   },
   en: {
     functional: 'Functional component',
@@ -45,7 +46,8 @@ const messages = {
         2: 'option 2'
       },
       placeholder: 'Input placeholder'
-    }
+    },
+    component: 'Component'
   }
 };
 
