@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+    <title>vue-i18n devtools</title>
+    <style>
+      body {
+        margin: 0 20px;
+        font-size: 14px;
+        color: #555;
+      }
+      .vue-i18n-devtools__list {
+        border: 1px solid #eee;
+        border-radius: 4px;
+        padding: 10px 16px;
+        list-style: none;
+        margin: 20px 0;
+        line-height: 2;
+      }
+      .vue-i18n-devtools__action {
+        margin-top: 20px;
+      }
+      select,
+      input {
+        border: 1px solid #ddd;
+        color: inherit;
+        font-size: inherit;
+      }
+      .i18n-devtools__mark {
+        outline-width: 1px;
+        outline-offset: 0;
+      }
+      .i18n-devtools__mark--text {
+        outline-style: solid;
+        outline-color: brown;
+      }
+      .i18n-devtools__mark--props {
+        outline-style: dashed;
+        outline-color: teal;
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>
+      <strong
+        >We're sorry but example doesn't work properly without JavaScript enabled. Please enable it
+        to continue.</strong
+      >
+    </noscript>
+    <div id="devtools"></div>
+    <div id="origin"></div>
+  </body>
+</html>

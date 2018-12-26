@@ -1,6 +1,15 @@
 import Vue from 'vue';
+import VueI18n from 'vue-i18n';
 import List from './components/List';
-import i18n from './i18n';
+import messages from './i18n/locales';
+
+Vue.use(VueI18n);
+
+const i18n = new VueI18n({
+  locale: 'en',
+  fallbackLocale: 'en',
+  messages
+});
 
 new Vue({
   i18n,
