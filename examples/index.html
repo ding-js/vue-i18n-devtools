@@ -41,7 +41,34 @@
 
     .i18n-devtools__mark--text {
       outline-style: solid;
+      outline-color: rgba(165, 42, 42, 0.438);
+      position: relative;
+    }
+    .i18n-devtools__mark--text:hover {
+      outline-style: solid;
       outline-color: brown;
+    }
+    .i18n-devtools__mark--text::after {
+      position: absolute;
+      top: -4px;
+      left: 0px;
+      transition: all 0.2s ease-out;
+      padding: 0em 0.5em;
+      border-radius: 0.5em 0.5em 0 0 ;
+      content: attr(value)"";
+      display: block;
+      color: white;
+      background: brown;
+      font-size: 10px;
+      font-weight: 400;
+      opacity: 0.2;
+      height: 4px;
+    }
+
+    .i18n-devtools__mark--text:hover::after {
+      top: -20px;
+      opacity: 1;
+      height: 20px;
     }
 
     .i18n-devtools__mark--props {
